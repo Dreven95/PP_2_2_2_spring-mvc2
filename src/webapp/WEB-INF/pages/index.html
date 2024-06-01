@@ -22,6 +22,11 @@
       </tr>
       </tbody>
     </table>
+    <form th:method="POST" th:action="@{/addNewUser}" th:object="${user}">
+      <label for="name">Введите имя: </label>
+      <input type="text" th:field="*{name}" id="name">
+      <input type="submit" value="Создать!">
+    </form>
   </section>
 </div>
 </body>

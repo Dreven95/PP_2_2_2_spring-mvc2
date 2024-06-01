@@ -10,6 +10,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
@@ -23,12 +24,13 @@ import java.util.Properties;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("web")
+@ComponentScan(basePackages = "web")
 public class WebConfig implements WebMvcConfigurer {
 
     private String dbDriver = "com.mysql.cj.jdbc.Driver";
 
-    private String dbUrl = "jdbc:mysql://localhost:3306/springmvc_hibernate_crud?verifyServerCertificate=false&useSSL=false&requireSSL=false&useLegacyDatetimeCode=false&amp&serverTimezone=UTC";
+//    private String dbUrl = "jdbc:mysql://localhost:3306/springmvc_hibernate_crud?verifyServerCertificate=false&useSSL=false&requireSSL=false&useLegacyDatetimeCode=false&amp&serverTimezone=UTC";
+    private String dbUrl = "jdbc:mysql://localhost:3306/springmvc_hibernate_crud?verifyServerCertificate=false&useSSL=false&requireSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8";
 
     private String dbUsername = "bestuser";
 
@@ -51,6 +53,7 @@ public class WebConfig implements WebMvcConfigurer {
         templateResolver.setApplicationContext(applicationContext);
         templateResolver.setPrefix("/WEB-INF/pages/");
         templateResolver.setSuffix(".html");
+        templateResolver.setCharacterEncoding("UTF-8");
         return templateResolver;
     }
 
@@ -68,6 +71,7 @@ public class WebConfig implements WebMvcConfigurer {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine());
         registry.viewResolver(resolver);
+        resolver.setContentType("text/html; charset=UTF-8");
     }
 
     @Bean
@@ -94,6 +98,8 @@ public class WebConfig implements WebMvcConfigurer {
         properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
 
         factoryBean.setJpaProperties(properties);
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        factoryBean.setJpaVendorAdapter(vendorAdapter);
 
         return factoryBean;
     }

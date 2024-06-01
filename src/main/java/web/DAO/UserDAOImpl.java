@@ -3,13 +3,16 @@ package web.DAO;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import web.models.User;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@Repository
 public class UserDAOImpl implements UserDAO {
-    @Autowired
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Override
