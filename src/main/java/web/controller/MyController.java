@@ -28,9 +28,9 @@ public class MyController {
     public String showAllUsers(Model model) {
         List<User> allUsers = userService.getAllUsers();
         model.addAttribute("allUsers", allUsers);
-        model.addAttribute("user", new User()); // добавление нового объекта user в модель
+        model.addAttribute("user", new User());
 
-        return "index"; // название вашего Thymeleaf шаблона (без .html)
+        return "index"; //
     }
 
     @PostMapping("/addNewUser")
@@ -47,25 +47,25 @@ public class MyController {
 //        return "redirect:/";
 //    }
 
-//    @PostMapping("/saveUser")
-//    public String saveUser(@ModelAttribute("user") User user) {
-//        userService.saveUser(user);
-//
-//        return "index";
-//    }
+    @PostMapping("/saveUser")
+    public String saveUser(@ModelAttribute("user") User user) {
+        userService.saveUser(user);
+
+        return "redirect:/";
+    }
 
     @PostMapping("/updateUser")
     public String updateUser(@RequestParam("userId") int id, Model model) {
         User user = userService.getUser(id);
         model.addAttribute("user", user);
 
-        return "index";
+        return "edit-user";
     }
 
     @PostMapping("/deleteUser")
     public String deleteUser(@RequestParam("userId") int id) {
         userService.deleteUser(id);
 
-        return "index";
+        return "redirect:/";
     }
 }

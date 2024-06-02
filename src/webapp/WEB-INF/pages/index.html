@@ -19,6 +19,16 @@
       <tr th:each="user : ${allUsers}" class="main__table-columns">
         <td th:text="${user.id}" class="main__table-cell"></td>
         <td th:text="${user.name}" class="main__table-cell"></td>
+        <td class="main__table-cell">
+          <form th:action="@{/deleteUser}" method="post" style="display:inline;">
+            <input type="hidden" th:name="userId" th:value="${user.id}" />
+            <input type="submit" value="Delete" />
+          </form>
+          <form th:action="@{/updateUser}" method="post" style="display:inline;">
+            <input type="hidden" th:name="userId" th:value="${user.id}" />
+            <input type="submit" value="Edit" />
+          </form>
+        </td>
       </tr>
       </tbody>
     </table>

@@ -12,6 +12,8 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -25,12 +27,13 @@ import java.util.Properties;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "web")
+@EnableTransactionManagement
 public class WebConfig implements WebMvcConfigurer {
 
     private String dbDriver = "com.mysql.cj.jdbc.Driver";
 
 //    private String dbUrl = "jdbc:mysql://localhost:3306/springmvc_hibernate_crud?verifyServerCertificate=false&useSSL=false&requireSSL=false&useLegacyDatetimeCode=false&amp&serverTimezone=UTC";
-    private String dbUrl = "jdbc:mysql://localhost:3306/springmvc_hibernate_crud?verifyServerCertificate=false&useSSL=false&requireSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8";
+    private String dbUrl = "jdbc:mysql://localhost:3306/springmvc_hibernate_crud?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8";
 
     private String dbUsername = "bestuser";
 
@@ -72,6 +75,7 @@ public class WebConfig implements WebMvcConfigurer {
         resolver.setTemplateEngine(templateEngine());
         registry.viewResolver(resolver);
         resolver.setContentType("text/html; charset=UTF-8");
+        resolver.setCharacterEncoding("UTF-8");
     }
 
     @Bean
@@ -96,6 +100,8 @@ public class WebConfig implements WebMvcConfigurer {
         properties.put("hibernate.show_sql", hibernateShowSql);
         properties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddlAuto);
         properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        properties.put("hibernate.connection.characterEncoding", "UTF-8");
+        properties.put("hibernate.connection.useUnicode", "true");
 
         factoryBean.setJpaProperties(properties);
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -109,6 +115,14 @@ public class WebConfig implements WebMvcConfigurer {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(getEntityFactory().getObject());
         return transactionManager;
+    }
+
+    @Bean
+    public CharacterEncodingFilter characterEncodingFilter() {
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);
+        return characterEncodingFilter;
     }
 
 }
