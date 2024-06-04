@@ -1,8 +1,7 @@
-package web.DAO;
+package web.dao;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import web.models.User;
 
@@ -12,8 +11,13 @@ import java.util.List;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
-    @PersistenceContext
+
     private EntityManager entityManager;
+
+    @PersistenceContext
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
     public List<User> getAllUsers() {
@@ -46,4 +50,5 @@ public class UserDAOImpl implements UserDAO {
         query.setParameter("userId", id);
         query.executeUpdate();
     }
+
 }

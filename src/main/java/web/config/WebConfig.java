@@ -1,12 +1,11 @@
 package web.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -28,20 +27,26 @@ import java.util.Properties;
 @EnableWebMvc
 @ComponentScan(basePackages = "web")
 @EnableTransactionManagement
+@PropertySource("classpath:application.properties")
 public class WebConfig implements WebMvcConfigurer {
 
-    private String dbDriver = "com.mysql.cj.jdbc.Driver";
+    @Value("${db.driver}")
+    private String dbDriver;
 
-//    private String dbUrl = "jdbc:mysql://localhost:3306/springmvc_hibernate_crud?verifyServerCertificate=false&useSSL=false&requireSSL=false&useLegacyDatetimeCode=false&amp&serverTimezone=UTC";
-    private String dbUrl = "jdbc:mysql://localhost:3306/springmvc_hibernate_crud?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8";
+    @Value("${db.url}")
+    private String dbUrl;
 
-    private String dbUsername = "bestuser";
+    @Value("${db.username}")
+    private String dbUsername;
 
-    private String dbPassword = "bestuser";
+    @Value("${db.password}")
+    private String dbPassword;
 
-    private String hibernateShowSql = "true";
+    @Value("${hibernate.show_sql}")
+    private String hibernateShowSql;
 
-    private String hibernateHbm2ddlAuto = "update";
+    @Value("${hibernate.hbm2ddl.auto}")
+    private String hibernateHbm2ddlAuto;
 
     private final ApplicationContext applicationContext;
 
