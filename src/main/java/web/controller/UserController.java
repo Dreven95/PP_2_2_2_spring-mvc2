@@ -37,12 +37,19 @@ public class UserController {
         return "redirect:/";
     }
 
-    @PostMapping("/updateUser")
-    public String updateUser(@RequestParam("userId") int id, Model model) {
+    @PostMapping("/editUser")
+    public String editUser(@RequestParam("userId") int id, Model model) {
         User user = userService.getUser(id);
         model.addAttribute("user", user);
 
         return "edit-user";
+    }
+
+    @PostMapping("/updateUser")
+    public String updateUser(@ModelAttribute("user") User user) {
+        userService.updateUser(user);
+
+        return "redirect:/";
     }
 
     @PostMapping("/deleteUser")

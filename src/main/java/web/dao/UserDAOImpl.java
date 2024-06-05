@@ -51,4 +51,10 @@ public class UserDAOImpl implements UserDAO {
         query.executeUpdate();
     }
 
+    @Override
+    public void updateUser(User user) {
+        Session session = entityManager.unwrap(Session.class);
+        session.merge(user);
+    }
+
 }
